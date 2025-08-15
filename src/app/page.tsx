@@ -34,7 +34,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
       <div className="flex flex-col items-center justify-center text-center">
         <div className="p-2 bg-primary rounded-full mb-4">
-            <Logo className="h-8 w-auto text-primary-foreground" />
+            <Logo className="h-8 w-auto fill-primary-foreground" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground">
           Welcome to Refro

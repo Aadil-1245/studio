@@ -16,7 +16,7 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
         fontFamily="Space Grotesk, sans-serif"
         fontSize="18"
         fontWeight="bold"
-        fill="hsl(var(--primary))"
+        className={cn("fill-primary", className?.includes("fill") && className)}
       >
         Refro
       </text>
