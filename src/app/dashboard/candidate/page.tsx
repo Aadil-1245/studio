@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake, TrendingUp, Users, Star } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake, TrendingUp, Users, Star, Briefcase } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from "@/components/ui/chart";
 
@@ -192,6 +193,24 @@ export default function CandidateDashboard() {
                 <Button asChild>
                     <Link href="/dashboard/candidate/find-referrer">
                         Browse Referrers
+                    </Link>
+                </Button>
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <Briefcase className="text-primary" />
+                    Available Jobs
+                </CardTitle>
+                <CardDescription>Browse open positions from various companies.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Find your next role and get referred.</p>
+                <Button asChild>
+                    <Link href="/dashboard/candidate/available-jobs">
+                        Browse Jobs
                     </Link>
                 </Button>
             </CardContent>
