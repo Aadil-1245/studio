@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award } from 'lucide-react';
+import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
@@ -13,6 +13,7 @@ const allNavItems = [
   { href: '/dashboard/candidate', label: 'Dashboard', icon: User, role: 'candidate' },
   { href: '/dashboard/candidate/test', label: 'Skills Test', icon: ClipboardCheck, role: 'candidate' },
   { href: '/dashboard/candidate/certifications', label: 'Certifications', icon: Award, role: 'candidate' },
+  { href: '/dashboard/candidate/coding-challenge', label: 'Coding Challenge', icon: Code, role: 'candidate' },
 ];
 
 export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {

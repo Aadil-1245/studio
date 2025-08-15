@@ -5,7 +5,7 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code } from "lucide-react";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
@@ -16,7 +16,7 @@ export default function CandidateDashboard() {
     <>
       <DashboardHeader user={user} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
               <ClipboardCheck className="text-primary" />
@@ -25,8 +25,21 @@ export default function CandidateDashboard() {
             <CardDescription>Tracking your progress for the Software Engineer role at Refro Inc.</CardDescription>
           </CardHeader>
           <CardContent>
-             <p className="text-sm text-muted-foreground">You are on track! The next step is the final interview. Prepare accordingly.</p>
-             <Button asChild className="mt-4">
+             <p className="text-sm text-muted-foreground">You are on track! Complete the assessments below to proceed.</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+                <ClipboardCheck className="text-accent" />
+                Skills Assessment
+            </CardTitle>
+            <CardDescription>A multiple-choice quiz to test your foundational knowledge.</CardDescription>
+          </Header>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">Test your knowledge with our quick quiz.</p>
+             <Button asChild>
                 <Link href="/dashboard/candidate/test">
                     Take Skills Assessment <ArrowRight className="ml-2" />
                 </Link>
@@ -37,22 +50,22 @@ export default function CandidateDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
-                <Lightbulb className="text-accent" />
-                Your Skills
+                <Code className="text-accent" />
+                Coding Challenge
             </CardTitle>
-            <CardDescription>Your registered skills.</CardDescription>
-          </CardHeader>
+            <CardDescription>A practical coding exercise to showcase your abilities.</CardDescription>
+          </Header>
           <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {skills.map(skill => (
-                <Badge key={skill} variant="secondary">{skill}</Badge>
-              ))}
-            </div>
-            <Button variant="outline" size="sm" className="mt-4">Add Skills</Button>
+             <p className="text-sm text-muted-foreground mb-4">Solve a real-world problem in our coding environment.</p>
+             <Button asChild>
+                <Link href="/dashboard/candidate/coding-challenge">
+                    Start Coding Challenge <ArrowRight className="ml-2" />
+                </Link>
+            </Button>
           </CardContent>
         </Card>
         
-        <Card className="lg:col-span-3">
+        <Card>
             <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2">
                     <Award className="text-primary" />
@@ -68,6 +81,23 @@ export default function CandidateDashboard() {
                     </Link>
                 </Button>
             </CardContent>
+        </Card>
+         <Card>
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+                <Lightbulb className="text-accent" />
+                Your Skills
+            </CardTitle>
+            <CardDescription>Your registered skills.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {skills.map(skill => (
+                <Badge key={skill} variant="secondary">{skill}</Badge>
+              ))}
+            </div>
+            <Button variant="outline" size="sm" className="mt-4">Add Skills</Button>
+          </CardContent>
         </Card>
       </div>
     </>
