@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UsersRound } from "lucide-react";
+import { Logo } from '@/components/logo';
 
 function LoginForm() {
   const router = useRouter();
@@ -32,8 +32,7 @@ function LoginForm() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
       <div className="flex flex-col items-center justify-center text-center mb-8">
         <Link href="/" className="flex items-center gap-2 font-semibold font-headline text-primary mb-4">
-          <UsersRound className="h-8 w-8" />
-          <span className="text-2xl">Refro</span>
+            <Logo />
         </Link>
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-foreground">
           Login as {capitalizedRole}

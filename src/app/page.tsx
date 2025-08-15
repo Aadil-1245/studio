@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Briefcase, User, UserCheck, UserCog, UsersRound, CheckCircle } from "lucide-react";
+import { ArrowRight, Briefcase, User, UserCheck, UserCog, CheckCircle } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 const roles = [
   { name: "Admin", href: "/login?role=admin", icon: UserCog, description: "Oversee the entire platform" },
@@ -33,7 +34,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
       <div className="flex flex-col items-center justify-center text-center">
         <div className="p-2 bg-primary rounded-full mb-4">
-            <UsersRound className="h-8 w-8 text-primary-foreground" />
+            <Logo className="h-8 w-auto text-primary-foreground" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground">
           Welcome to Refro

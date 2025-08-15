@@ -3,9 +3,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code, Users, Handshake, BrainCircuit, BarChart } from 'lucide-react';
+import { Briefcase, Home, User, UserCheck, UserCog, ClipboardCheck, Award, Code, Users, Handshake, BrainCircuit, BarChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { Logo } from './logo';
 
 const allNavItems = [
   { href: '/dashboard/admin', label: 'Admin', icon: UserCog, role: 'admin' },
@@ -56,8 +57,7 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
     <div className="flex h-full flex-col">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <Link href="/" className="flex items-center gap-2 font-semibold font-headline">
-          <UsersRound className="h-6 w-6 text-primary" />
-          <span>Refro</span>
+          <Logo />
         </Link>
       </div>
       <nav className="flex-1 overflow-auto py-2 px-2 lg:px-4">
