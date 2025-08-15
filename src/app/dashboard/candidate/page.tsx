@@ -1,46 +1,75 @@
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardHeader from '@/components/dashboard-header';
-import { FileCheck2, Hourglass, Mail, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight } from "lucide-react";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
-const timeline = [
-  { status: "Application Submitted", date: "2023-10-01", icon: FileCheck2, complete: true },
-  { status: "HR Review", date: "2023-10-03", icon: Hourglass, complete: true },
-  { status: "Technical Interview", date: "2023-10-10", icon: Mail, complete: true },
-  { status: "Final Interview", date: "2023-10-15", icon: Mail, complete: false },
-  { status: "Offer", date: "Pending", icon: XCircle, complete: false },
-];
+const skills = ["React", "TypeScript", "Node.js", "Tailwind CSS", "Next.js"];
 
 export default function CandidateDashboard() {
   return (
     <>
       <DashboardHeader user={user} />
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-headline">Your Application Status</CardTitle>
-          <CardDescription>Tracking your progress for the Software Engineer role at Refro Inc.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="relative pl-6">
-            {/* Vertical line */}
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2"></div>
-            
-            {timeline.map((item, index) => (
-              <div key={index} className="flex items-start gap-6 pb-8 last:pb-0">
-                <div className={`relative flex h-12 w-12 items-center justify-center rounded-full ${item.complete ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
-                   <div className="absolute top-1/2 left-[-24px] w-6 h-0.5 bg-border -translate-y-1/2"></div>
-                  <item.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="font-semibold">{item.status}</p>
-                  <p className="text-sm text-muted-foreground">{item.date}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+              <ClipboardCheck className="text-primary" />
+              Your Application Status
+            </CardTitle>
+            <CardDescription>Tracking your progress for the Software Engineer role at Refro Inc.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <p className="text-sm text-muted-foreground">You are on track! The next step is the final interview. Prepare accordingly.</p>
+             <Button asChild className="mt-4">
+                <Link href="/dashboard/candidate/test">
+                    Take Skills Assessment <ArrowRight className="ml-2" />
+                </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+                <Lightbulb className="text-accent" />
+                Your Skills
+            </CardTitle>
+            <CardDescription>Your registered skills.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {skills.map(skill => (
+                <Badge key={skill} variant="secondary">{skill}</Badge>
+              ))}
+            </div>
+            <Button variant="outline" size="sm" className="mt-4">Add Skills</Button>
+          </CardContent>
+        </Card>
+        
+        <Card className="lg:col-span-3">
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <Award className="text-primary" />
+                    Certifications
+                </CardTitle>
+                <CardDescription>Manage and verify your professional certifications.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">You have no certifications yet.</p>
+                <Button asChild>
+                    <Link href="/dashboard/candidate/certifications">
+                        Add & Verify Certification
+                    </Link>
+                </Button>
+            </CardContent>
+        </Card>
+      </div>
     </>
   );
 }

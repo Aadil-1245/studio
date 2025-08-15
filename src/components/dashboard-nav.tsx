@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Home, User, UserCheck, UserCog, UsersRound } from 'lucide-react';
+import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
@@ -10,7 +10,9 @@ const allNavItems = [
   { href: '/dashboard/admin', label: 'Admin', icon: UserCog, role: 'admin' },
   { href: '/dashboard/hr', label: 'HR', icon: Briefcase, role: 'hr' },
   { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck, role: 'referrer' },
-  { href: '/dashboard/candidate', label: 'Candidate', icon: User, role: 'candidate' },
+  { href: '/dashboard/candidate', label: 'Dashboard', icon: User, role: 'candidate' },
+  { href: '/dashboard/candidate/test', label: 'Skills Test', icon: ClipboardCheck, role: 'candidate' },
+  { href: '/dashboard/candidate/certifications', label: 'Certifications', icon: Award, role: 'candidate' },
 ];
 
 export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
@@ -19,10 +21,20 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
 
   const navItems = allNavItems.filter(item => {
     if (role === 'admin') {
-      return true;
+      // Show all nav items for admin for simplicity, or define admin-specific views.
+      // For now, let's stick to just the admin role link.
+      return item.role === 'admin';
     }
     return item.role === role;
   });
+  
+  // A special case for admin to see all dashboards for demo purposes.
+  if (role === 'admin') {
+    navItems.push(
+        ...allNavItems.filter(item => item.role !== 'admin' && item.href.split('/').length < 4)
+    )
+  }
+
 
   return (
     <div className="flex h-full flex-col">
