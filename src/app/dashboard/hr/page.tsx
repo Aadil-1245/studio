@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -34,7 +33,7 @@ const jobSchema = z.object({
   eligibilityCriteria: z.string().min(10, "Eligibility criteria is required."),
 });
 
-const applicants = [
+const initialApplicants = [
   { name: "Liam Johnson", role: "Software Engineer", match: 92, status: "Interviewing" },
   { name: "Emma Williams", role: "UX Designer", match: 85, status: "Pending Review" },
   { name: "Noah Brown", role: "Product Manager", match: 78, status: "Hired" },
@@ -47,6 +46,7 @@ const applicants = [
 export default function HrDashboard() {
   const { toast } = useToast();
   const [profileSaved, setProfileSaved] = useState(false);
+  const [applicants, setApplicants] = useState(initialApplicants);
 
   const profileForm = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -71,9 +71,10 @@ export default function HrDashboard() {
   };
   
   const onSendTest = (applicantName: string) => {
+    setApplicants(applicants.map(app => app.name === applicantName ? { ...app, status: 'Interviewing' } : app));
     toast({
         title: "Assessment Sent!",
-        description: `The company test has been sent to ${applicantName}.`,
+        description: `The company test has been sent to ${applicantName}. Their status is now "Interviewing".`,
     })
   }
 
@@ -174,7 +175,7 @@ export default function HrDashboard() {
                         </TableCell>
                         <TableCell>{applicant.role}</TableCell>
                         <TableCell className="text-center">
-                            <Badge variant={applicant.match >= 75 ? "default" : "secondary"} className={cn(applicant.match >= 90 && "bg-green-600 text-white hover:bg-green-700", applicant.match < 90 && applicant.match >= 75 && "bg-green-500 text-white", applicant.match < 75 && applicant.match > 50 && "bg-yellow-500 text-white", applicant.match <= 50 && "bg-red-500 text-white")}>
+                            <Badge variant={applicant.match >= 75 ? "default" : "secondary"} className={cn(applicant.match >= 90 && "bg-green-600 text-white hover:bg-green-700", applicant.match < 90 && applicant.match >= 75 && "bg-blue-500 text-white", applicant.match < 75 && applicant.match > 50 && "bg-yellow-500 text-white", applicant.match <= 50 && "bg-red-500 text-white")}>
                             {applicant.match}%
                             </Badge>
                         </TableCell>
@@ -182,7 +183,7 @@ export default function HrDashboard() {
                             <Badge variant="outline">{applicant.status}</Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                            {applicant.match >= 75 ? (
+                            {applicant.status === 'Pending Review' && applicant.match >= 75 ? (
                                 <Button variant="outline" size="sm" onClick={() => onSendTest(applicant.name)}>
                                     <Pencil className="mr-2" />
                                     Send Test
