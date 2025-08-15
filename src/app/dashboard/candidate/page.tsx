@@ -5,11 +5,29 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake, TrendingUp, Users, Star } from "lucide-react";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { ChartContainer } from "@/components/ui/chart";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
 const skills = ["React", "Java", "Python", "DSA", "HTML", "SQL", "CSS", "Next.js", "Web3"];
+
+const performanceData = [
+  { subject: 'React', score: 80, fullMark: 100 },
+  { subject: 'Next.js', score: 92, fullMark: 100 },
+  { subject: 'DSA', score: 75, fullMark: 100 },
+  { subject: 'SQL', score: 85, fullMark: 100 },
+  { subject: 'System Design', score: 68, fullMark: 100 },
+  { subject: 'Java', score: 78, fullMark: 100 },
+];
+
+const chartConfig = {
+  score: {
+    label: "Score",
+    color: "hsl(var(--primary))",
+  },
+};
 
 export default function CandidateDashboard() {
   return (
@@ -28,7 +46,49 @@ export default function CandidateDashboard() {
              <p className="text-sm text-muted-foreground">You are on track! Complete the assessments below to proceed.</p>
           </CardContent>
         </Card>
-
+        
+        <Card className="col-span-1 lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+              <TrendingUp className="text-primary" />
+              Performance Overview
+            </CardTitle>
+            <CardDescription>Your assessment scores and referral statistics.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <ChartContainer config={chartConfig} className="w-full aspect-square h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={performanceData}>
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="subject" />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                  <Radar name="Jane Smith" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+             <div className="flex flex-col gap-4">
+              <Card>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-lg flex items-center gap-2"><Users className="text-accent"/> Referrals Sent</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                  <p className="text-3xl font-bold">5</p>
+                  <p className="text-xs text-muted-foreground">requests sent</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-lg flex items-center gap-2"><Star className="text-accent"/> Referrals Accepted</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                   <p className="text-3xl font-bold">2</p>
+                   <p className="text-xs text-muted-foreground">accepted by referrers</p>
+                </CardContent>
+              </Card>
+            </div>
+          </CardContent>
+        </Card>
+        
         <Card>
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
