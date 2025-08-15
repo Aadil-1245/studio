@@ -12,8 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, BadgeCheck, Send } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, BadgeCheck, Send, Bell } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const user = { name: 'Alex Doe', role: 'Referrer', avatar: 'https://placehold.co/100x100', initials: 'AD' };
 
@@ -74,20 +74,33 @@ export default function ReferrerDashboard() {
     });
   }
 
+  const pendingRequestsCount = requests.filter(r => r.status === 'Pending').length;
+
   return (
     <>
       <DashboardHeader user={user} />
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {/* Referrer Profile Section */}
-        <div className="lg:col-span-1 space-y-6">
-            <Card>
+      <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="profile">
+            <UserCircle className="mr-2"/> Profile
+          </TabsTrigger>
+          <TabsTrigger value="post-job">
+            <FileText className="mr-2"/> Post a Job
+          </TabsTrigger>
+          <TabsTrigger value="requests">
+            <Bell className="mr-2"/> Requests {pendingRequestsCount > 0 && <Badge className="ml-2">{pendingRequestsCount}</Badge>}
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="profile" className="mt-6">
+           <Card>
             <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><UserCircle /> Referrer Profile</CardTitle>
                 <CardDescription>Keep your professional details up-to-date.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...profileForm}>
-                <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
+                <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4 max-w-lg mx-auto">
                     <FormField control={profileForm.control} name="company" render={({ field }) => (
                         <FormItem><FormLabel className="flex items-center gap-2"><Building/> Company</FormLabel><FormControl><Input placeholder="e.g., Refro Inc." {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
@@ -114,31 +127,32 @@ export default function ReferrerDashboard() {
                 </Form>
             </CardContent>
             </Card>
-        </div>
+        </TabsContent>
 
-        {/* Post Job & Manage Requests */}
-        <div className="lg:col-span-2 space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2"><FileText /> Post a New Job</CardTitle>
-                    <CardDescription>Share a job opening with the candidates on the Refro platform.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...jobForm}>
-                    <form onSubmit={jobForm.handleSubmit(onPostJob)} className="space-y-4">
-                        <FormField control={jobForm.control} name="jobDescription" render={({ field }) => (
-                            <FormItem><FormLabel>Job Description</FormLabel><FormControl><Textarea placeholder="Describe the role, responsibilities, and requirements..." {...field} /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <FormField control={jobForm.control} name="eligibilityCriteria" render={({ field }) => (
-                            <FormItem><FormLabel>Eligibility Criteria</FormLabel><FormControl><Textarea placeholder="e.g., 5+ years of experience with React, Bachelor's degree in CS..." {...field} /></FormControl><FormMessage /></FormItem>
-                        )} />
-                         <Button type="submit"><Send className="mr-2"/> Post Job</Button>
-                    </form>
-                    </Form>
-                </CardContent>
-            </Card>
+        <TabsContent value="post-job" className="mt-6">
+          <Card>
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2"><FileText /> Post a New Job</CardTitle>
+                <CardDescription>Share a job opening with the candidates on the Refro platform.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Form {...jobForm}>
+                <form onSubmit={jobForm.handleSubmit(onPostJob)} className="space-y-4 max-w-lg mx-auto">
+                    <FormField control={jobForm.control} name="jobDescription" render={({ field }) => (
+                        <FormItem><FormLabel>Job Description</FormLabel><FormControl><Textarea placeholder="Describe the role, responsibilities, and requirements..." {...field} className="min-h-32" /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={jobForm.control} name="eligibilityCriteria" render={({ field }) => (
+                        <FormItem><FormLabel>Eligibility Criteria</FormLabel><FormControl><Textarea placeholder="e.g., 5+ years of experience with React, Bachelor's degree in CS..." {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                     <Button type="submit"><Send className="mr-2"/> Post Job</Button>
+                </form>
+                </Form>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            <Card>
+        <TabsContent value="requests" className="mt-6">
+           <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Incoming Referral Requests</CardTitle>
                     <CardDescription>Review and respond to referral requests from candidates.</CardDescription>
@@ -170,8 +184,8 @@ export default function ReferrerDashboard() {
                     )}
                 </CardContent>
             </Card>
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
