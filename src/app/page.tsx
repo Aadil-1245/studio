@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Briefcase, User, UserCheck, UserCog } from "lucide-react";
+import { ArrowRight, Briefcase, User, UserCheck, UserCog, UsersRound } from "lucide-react";
 
 const roles = [
   { name: "Admin", href: "/login?role=admin", icon: UserCog, description: "Oversee the entire platform" },
@@ -15,7 +15,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
       <div className="flex flex-col items-center justify-center text-center">
         <div className="p-2 bg-primary rounded-full mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--primary-foreground))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-users-round"><path d="M18 21a8 8 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><path d="M6 21a8 8 0 0 1 12 0"/></svg>
+            <UsersRound className="h-8 w-8 text-primary-foreground" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground">
           Welcome to Refro
