@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send, Pencil, CheckCircle, Calendar, UserCheck } from 'lucide-react';
+import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send, Pencil, CheckCircle, Calendar, UserCheck, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
@@ -35,13 +35,13 @@ const jobSchema = z.object({
 });
 
 const initialApplicants = [
-  { name: "Liam Johnson", role: "Software Engineer", match: 92, status: "Interviewing", testScore: 88, meetingLink: '' },
-  { name: "Emma Williams", role: "UX Designer", match: 85, status: "Interviewing", testScore: 91, meetingLink: '' },
-  { name: "Noah Brown", role: "Product Manager", match: 78, status: "Hired", testScore: null, meetingLink: '' },
-  { name: "Olivia Jones", role: "Data Scientist", match: 65, status: "Rejected", testScore: null, meetingLink: '' },
-  { name: "Ava Garcia", role: "Marketing Lead", match: 95, status: "Offer Extended", testScore: 94, meetingLink: 'https://meet.google.com/lookup/fake-meeting-code' },
-  { name: "William Miller", role: "DevOps Engineer", match: 42, status: "Pending Review", testScore: null, meetingLink: '' },
-  { name: "Sophia Davis", role: "Software Engineer", match: 88, status: "Interviewing", testScore: 79, meetingLink: '' },
+  { name: "Liam Johnson", role: "Software Engineer", match: 92, status: "Interviewing", testScore: 88, meetingLink: '', joiningDate: '' },
+  { name: "Emma Williams", role: "UX Designer", match: 85, status: "Interviewing", testScore: 91, meetingLink: '', joiningDate: '' },
+  { name: "Noah Brown", role: "Product Manager", match: 78, status: "Hired", testScore: null, meetingLink: '', joiningDate: '2024-08-01' },
+  { name: "Olivia Jones", role: "Data Scientist", match: 65, status: "Rejected", testScore: null, meetingLink: '', joiningDate: '' },
+  { name: "Ava Garcia", role: "Marketing Lead", match: 95, status: "Offer Extended", testScore: 94, meetingLink: 'https://meet.google.com/lookup/fake-meeting-code', joiningDate: '' },
+  { name: "William Miller", role: "DevOps Engineer", match: 42, status: "Pending Review", testScore: null, meetingLink: '', joiningDate: '' },
+  { name: "Sophia Davis", role: "Software Engineer", match: 88, status: "Interviewing", testScore: 79, meetingLink: '', joiningDate: '' },
 ];
 
 export default function HrDashboard() {
@@ -80,7 +80,10 @@ export default function HrDashboard() {
   }
 
   const handleHire = (applicantName: string) => {
-    setApplicants(applicants.map(app => app.name === applicantName ? { ...app, status: 'Hired' } : app));
+    const joiningDate = new Date();
+    joiningDate.setDate(joiningDate.getDate() + 14); // Set joining date 2 weeks from now
+    
+    setApplicants(applicants.map(app => app.name === applicantName ? { ...app, status: 'Hired', joiningDate: joiningDate.toISOString().split('T')[0] } : app));
     toast({ title: "Candidate Hired!", description: `${applicantName} has been marked as Hired.` });
   }
 
@@ -90,12 +93,13 @@ export default function HrDashboard() {
   }
 
   const interviewingApplicants = applicants.filter(a => a.status === 'Interviewing');
+  const hiredApplicants = applicants.filter(a => a.status === 'Hired');
 
   return (
     <>
       <DashboardHeader user={user} />
       <Tabs defaultValue="applicants" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="profile">
             <UserCircle className="mr-2"/> Profile
           </TabsTrigger>
@@ -107,6 +111,9 @@ export default function HrDashboard() {
           </TabsTrigger>
           <TabsTrigger value="assessments">
             <CheckCircle className="mr-2"/> Assessments
+          </TabsTrigger>
+          <TabsTrigger value="hired">
+            <Users className="mr-2"/> Hired
           </TabsTrigger>
         </TabsList>
         
@@ -254,6 +261,34 @@ export default function HrDashboard() {
                         ))
                     ) : (
                         <p className="text-sm text-muted-foreground text-center py-8">No candidates are currently in the assessment stage.</p>
+                    )}
+                </CardContent>
+            </Card>
+        </TabsContent>
+        <TabsContent value="hired" className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Hired Candidates</CardTitle>
+                    <CardDescription>A list of candidates who have been successfully hired.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                     {hiredApplicants.length > 0 ? (
+                        hiredApplicants.map(applicant => (
+                             <Card key={applicant.name} className="p-4">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                    <div className="flex-1">
+                                        <p className="font-bold">{applicant.name}</p>
+                                        <p className="text-sm text-muted-foreground">{applicant.role}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <Calendar className="text-muted-foreground" />
+                                        <span className="font-semibold">Joining Date: {applicant.joiningDate}</span>
+                                    </div>
+                                </div>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="text-sm text-muted-foreground text-center py-8">No candidates have been hired yet.</p>
                     )}
                 </CardContent>
             </Card>
