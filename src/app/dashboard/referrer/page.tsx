@@ -12,8 +12,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, BadgeCheck, Send, Bell } from 'lucide-react';
+import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, BadgeCheck, Send, Bell, BarChart, Calendar } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Link from 'next/link';
 
 const user = { name: 'Alex Doe', role: 'Referrer', avatar: 'https://placehold.co/100x100', initials: 'AD' };
 
@@ -33,9 +34,9 @@ const jobSchema = z.object({
 });
 
 const initialRequests = [
-  { id: 1, name: 'Jane Smith', role: 'Software Engineer', status: 'Pending' },
-  { id: 2, name: 'John Doe', role: 'Product Designer', status: 'Pending' },
-  { id: 3, name: 'Peter Jones', role: 'Data Analyst', status: 'Pending' },
+  { id: 1, name: 'Jane Smith', role: 'Software Engineer', status: 'Pending' as 'Pending' | 'Approved' | 'Rejected', meetingLink: '' },
+  { id: 2, name: 'John Doe', role: 'Product Designer', status: 'Pending' as 'Pending' | 'Approved' | 'Rejected', meetingLink: '' },
+  { id: 3, name: 'Peter Jones', role: 'Data Analyst', status: 'Pending' as 'Pending' | 'Approved' | 'Rejected', meetingLink: '' },
 ];
 
 export default function ReferrerDashboard() {
@@ -73,6 +74,12 @@ export default function ReferrerDashboard() {
       description: `The request from ${request?.name} has been ${newStatus.toLowerCase()}.`
     });
   }
+  
+  const handleScheduleMeeting = (id: number) => {
+    setRequests(requests.map(req => req.id === id ? { ...req, meetingLink: 'https://meet.google.com/lookup/fake-meeting-code' } : req));
+    toast({ title: "Meeting Link Generated", description: "A simulated meeting link has been created." });
+  }
+
 
   const pendingRequestsCount = requests.filter(r => r.status === 'Pending').length;
 
@@ -160,24 +167,46 @@ export default function ReferrerDashboard() {
                 <CardContent className="space-y-4">
                     {requests.length > 0 ? requests.map(req => (
                         <Card key={req.id} className="p-4">
-                            <div className="flex flex-col sm:flex-row sm:items-center">
-                                <div className="flex-1 mb-4 sm:mb-0">
+                           <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                <div className="flex-1">
                                     <p className="font-bold">{req.name}</p>
                                     <p className="text-sm text-muted-foreground">{req.role}</p>
                                 </div>
-                                {req.status === 'Pending' ? (
-                                    <div className="flex gap-2">
-                                        <Button size="sm" variant="outline" className="text-red-500 border-red-500 hover:bg-red-500/10 hover:text-red-600" onClick={() => handleRequest(req.id, 'Rejected')}>
-                                            <X className="mr-2" /> Reject
-                                        </Button>
-                                        <Button size="sm" className="bg-green-500 hover:bg-green-600" onClick={() => handleRequest(req.id, 'Approved')}>
-                                            <Check className="mr-2" /> Approve
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <Badge variant={req.status === 'Approved' ? 'default' : 'destructive'} className={req.status === 'Approved' ? 'bg-green-600' : ''}>{req.status}</Badge>
-                                )}
+                                <div className="flex flex-wrap items-start gap-2">
+                                    {req.status === 'Pending' && (
+                                        <>
+                                            <Button size="sm" variant="outline" className="text-red-500 border-red-500 hover:bg-red-500/10 hover:text-red-600" onClick={() => handleRequest(req.id, 'Rejected')}>
+                                                <X className="mr-2" /> Reject
+                                            </Button>
+                                            <Button size="sm" className="bg-green-500 hover:bg-green-600" onClick={() => handleRequest(req.id, 'Approved')}>
+                                                <Check className="mr-2" /> Approve
+                                            </Button>
+                                        </>
+                                    )}
+                                     <Button size="sm" variant="outline" asChild>
+                                       <Link href="/dashboard/candidate"><BarChart className="mr-2" /> View Analytics</Link>
+                                    </Button>
+                                    {req.status !== 'Pending' && (
+                                         <Badge variant={req.status === 'Approved' ? 'default' : 'destructive'} className={req.status === 'Approved' ? 'bg-green-600' : ''}>{req.status}</Badge>
+                                    )}
+                                </div>
                             </div>
+                            {req.status === 'Approved' && (
+                                <div className="mt-4 pt-4 border-t">
+                                    {!req.meetingLink ? (
+                                        <Button size="sm" onClick={() => handleScheduleMeeting(req.id)}>
+                                            <Calendar className="mr-2" /> Schedule Meeting
+                                        </Button>
+                                    ) : (
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="font-semibold">Meeting Link:</span>
+                                            <Link href={req.meetingLink} target="_blank" className="text-primary underline hover:text-primary/80">
+                                                {req.meetingLink}
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </Card>
                     )) : (
                         <p className="text-sm text-muted-foreground text-center">No new referral requests.</p>
