@@ -6,15 +6,23 @@ import { Briefcase, Home, User, UserCheck, UserCog, UsersRound } from 'lucide-re
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
-const navItems = [
-  { href: '/dashboard/admin', label: 'Admin', icon: UserCog },
-  { href: '/dashboard/hr', label: 'HR', icon: Briefcase },
-  { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck },
-  { href: '/dashboard/candidate', label: 'Candidate', icon: User },
+const allNavItems = [
+  { href: '/dashboard/admin', label: 'Admin', icon: UserCog, role: 'admin' },
+  { href: '/dashboard/hr', label: 'HR', icon: Briefcase, role: 'hr' },
+  { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck, role: 'referrer' },
+  { href: '/dashboard/candidate', label: 'Candidate', icon: User, role: 'candidate' },
 ];
 
 export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
   const pathname = usePathname();
+  const role = pathname.split('/')[2];
+
+  const navItems = allNavItems.filter(item => {
+    if (role === 'admin') {
+      return true;
+    }
+    return item.role === role;
+  });
 
   return (
     <div className="flex h-full flex-col">
