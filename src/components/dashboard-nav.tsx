@@ -34,8 +34,7 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
     }
     
     if (role === 'admin') {
-      // Show all nav items for admin for simplicity.
-      return true;
+      return item.role === 'admin';
     }
     
     // For referrer, only show the main dashboard and analytics
