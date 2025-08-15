@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code, Users, Handshake, BrainCircuit } from 'lucide-react';
+import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code, Users, Handshake, BrainCircuit, BarChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
@@ -11,6 +11,7 @@ const allNavItems = [
   { href: '/dashboard/admin', label: 'Admin', icon: UserCog, role: 'admin' },
   { href: '/dashboard/hr', label: 'HR', icon: Briefcase, role: 'hr' },
   { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck, role: 'referrer' },
+  { href: '/dashboard/referrer/candidate-analytics', label: 'Candidate Analytics', icon: BarChart, role: 'referrer' },
   { href: '/dashboard/candidate', label: 'Dashboard', icon: User, role: 'candidate' },
   { href: '/dashboard/candidate/available-jobs', label: 'Available Jobs', icon: Briefcase, role: 'candidate' },
   { href: '/dashboard/candidate/skills-assessment', label: 'Skills Assessments', icon: BrainCircuit, role: 'candidate' },
@@ -36,6 +37,12 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
       // Show all nav items for admin for simplicity.
       return true;
     }
+    
+    // For referrer, only show the main dashboard and analytics
+    if (role === 'referrer') {
+        return itemRole === 'referrer';
+    }
+
     return itemRole === role;
   });
   
@@ -56,7 +63,7 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
       <nav className="flex-1 overflow-auto py-2 px-2 lg:px-4">
         <div className="grid items-start font-medium">
           {navItems.map(({ href, label, icon: Icon }) => {
-            const isActive = pathname.startsWith(href);
+            const isActive = pathname === href;
             const linkContent = (
               <Link
                 href={href}

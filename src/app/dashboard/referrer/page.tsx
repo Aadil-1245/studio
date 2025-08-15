@@ -184,7 +184,7 @@ export default function ReferrerDashboard() {
                                         </>
                                     )}
                                      <Button size="sm" variant="outline" asChild>
-                                       <Link href="/dashboard/candidate"><BarChart className="mr-2" /> View Analytics</Link>
+                                       <Link href="/dashboard/referrer/candidate-analytics"><BarChart className="mr-2" /> View Analytics</Link>
                                     </Button>
                                     {req.status !== 'Pending' && (
                                          <Badge variant={req.status === 'Approved' ? 'default' : 'destructive'} className={req.status === 'Approved' ? 'bg-green-600' : ''}>{req.status}</Badge>
