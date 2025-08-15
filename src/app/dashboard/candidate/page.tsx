@@ -5,7 +5,7 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Users } from "lucide-react";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
@@ -54,7 +54,7 @@ export default function CandidateDashboard() {
                 Coding Challenge
             </CardTitle>
             <CardDescription>A practical coding exercise to showcase your abilities.</CardDescription>
-          </CardHeader>
+          </Header>
           <CardContent>
              <p className="text-sm text-muted-foreground mb-4">Solve a real-world problem in our coding environment.</p>
              <Button asChild>
@@ -98,6 +98,23 @@ export default function CandidateDashboard() {
             </div>
             <Button variant="outline" size="sm" className="mt-4">Add Skills</Button>
           </CardContent>
+        </Card>
+         <Card>
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <Users className="text-primary" />
+                    Leaderboard
+                </CardTitle>
+                <CardDescription>See how you rank against other candidates.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Check out the current standings.</p>
+                <Button asChild>
+                    <Link href="/dashboard/candidate/leaderboard">
+                        View Leaderboard
+                    </Link>
+                </Button>
+            </CardContent>
         </Card>
       </div>
     </>
