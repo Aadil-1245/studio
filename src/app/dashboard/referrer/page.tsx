@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, Id, Send } from 'lucide-react';
+import { UserCircle, Briefcase, FileText, Check, X, Building, Mail, Phone, Library, BadgeCheck, Send } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const user = { name: 'Alex Doe', role: 'Referrer', avatar: 'https://placehold.co/100x100', initials: 'AD' };
@@ -104,10 +104,10 @@ export default function ReferrerDashboard() {
                         <FormItem><FormLabel className="flex items-center gap-2"><Library/> Aadhar Number</FormLabel><FormControl><Input placeholder="12-digit number" {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
                      <FormField control={profileForm.control} name="drivingLicense" render={({ field }) => (
-                        <FormItem><FormLabel className="flex items-center gap-2"><Id/> Driving License</FormLabel><FormControl><Input placeholder="License number" {...field} /></FormControl><FormMessage /></FormItem>
+                        <FormItem><FormLabel className="flex items-center gap-2"><BadgeCheck/> Driving License</FormLabel><FormControl><Input placeholder="License number" {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
                      <FormField control={profileForm.control} name="companyId" render={({ field }) => (
-                        <FormItem><FormLabel className="flex items-center gap-2"><Id/> Company ID</FormLabel><FormControl><Input placeholder="Your Employee ID" {...field} /></FormControl><FormMessage /></FormItem>
+                        <FormItem><FormLabel className="flex items-center gap-2"><BadgeCheck/> Company ID</FormLabel><FormControl><Input placeholder="Your Employee ID" {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
                     <Button type="submit" className="w-full" disabled={profileSaved}>{profileSaved ? "Profile Saved" : "Save Profile"}</Button>
                 </form>
