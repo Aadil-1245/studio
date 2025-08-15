@@ -94,48 +94,48 @@ export default function AdminDashboard() {
         <Card className="col-span-1 lg:col-span-4">
           <CardHeader>
             <CardTitle>Referral Performance</CardTitle>
-            <CardContent className="pl-2">
-              <ChartContainer config={chartConfig} className="w-full aspect-video h-[250px]">
-                <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                  <CartesianGrid vertical={false} />
-                  <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Legend />
-                  <Bar dataKey="referrals" fill="var(--color-referrals)" radius={4} />
-                </BarChart>
-              </ChartContainer>
-            </CardContent>
           </CardHeader>
+          <CardContent className="pl-2">
+            <ChartContainer config={chartConfig} className="w-full aspect-video h-[250px]">
+              <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Bar dataKey="referrals" fill="var(--color-referrals)" radius={4} />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
         </Card>
         <Card className="col-span-1 lg:col-span-3">
           <CardHeader>
             <CardTitle>Users by Role</CardTitle>
-            <CardContent>
-              <ChartContainer config={chartConfig} className="w-full aspect-square h-[250px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </CardContent>
           </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="w-full aspect-square h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
         </Card>
       </div>
     </>
