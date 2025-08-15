@@ -5,7 +5,7 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Users } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Users, Handshake } from "lucide-react";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
@@ -82,6 +82,7 @@ export default function CandidateDashboard() {
                 </Button>
             </CardContent>
         </Card>
+        
          <Card>
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
@@ -99,6 +100,7 @@ export default function CandidateDashboard() {
             <Button variant="outline" size="sm" className="mt-4">Add Skills</Button>
           </CardContent>
         </Card>
+
          <Card>
             <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2">
@@ -112,6 +114,24 @@ export default function CandidateDashboard() {
                 <Button asChild>
                     <Link href="/dashboard/candidate/leaderboard">
                         View Leaderboard
+                    </Link>
+                </Button>
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <Handshake className="text-accent" />
+                    Find a Referrer
+                </CardTitle>
+                <CardDescription>Browse referrers and request a referral.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Connect with employees who can refer you.</p>
+                <Button asChild>
+                    <Link href="/dashboard/candidate/find-referrer">
+                        Browse Referrers
                     </Link>
                 </Button>
             </CardContent>
