@@ -54,7 +54,7 @@ export default function CandidateDashboard() {
                 Coding Challenge
             </CardTitle>
             <CardDescription>A practical coding exercise to showcase your abilities.</CardDescription>
-          </Header>
+          </CardHeader>
           <CardContent>
              <p className="text-sm text-muted-foreground mb-4">Solve a real-world problem in our coding environment.</p>
              <Button asChild>
