@@ -6,7 +6,7 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake, TrendingUp, Users, Star, Briefcase } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake, TrendingUp, Users, Star, Briefcase, User } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from "@/components/ui/chart";
 
@@ -90,6 +90,24 @@ export default function CandidateDashboard() {
           </CardContent>
         </Card>
         
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline flex items-center gap-2">
+                <User className="text-accent" />
+                Your Profile
+            </CardTitle>
+            <CardDescription>Complete your profile to attract referrers and companies.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">Add your academic details and projects.</p>
+             <Button asChild>
+                <Link href="/dashboard/candidate/profile">
+                    Manage Profile <ArrowRight className="ml-2" />
+                </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">

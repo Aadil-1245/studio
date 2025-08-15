@@ -13,6 +13,7 @@ const allNavItems = [
   { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck, role: 'referrer' },
   { href: '/dashboard/referrer/candidate-analytics', label: 'Candidate Analytics', icon: BarChart, role: 'referrer' },
   { href: '/dashboard/candidate', label: 'Dashboard', icon: User, role: 'candidate' },
+  { href: '/dashboard/candidate/profile', label: 'Profile', icon: User, role: 'candidate' },
   { href: '/dashboard/candidate/available-jobs', label: 'Available Jobs', icon: Briefcase, role: 'candidate' },
   { href: '/dashboard/candidate/skills-assessment', label: 'Skills Assessments', icon: BrainCircuit, role: 'candidate' },
   { href: '/dashboard/candidate/certifications', label: 'Certifications', icon: Award, role: 'candidate' },
