@@ -1,3 +1,57 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Briefcase, User, UserCheck, UserCog } from "lucide-react";
+
+const roles = [
+  { name: "Admin", href: "/dashboard/admin", icon: UserCog, description: "Oversee the entire platform" },
+  { name: "HR", href: "/dashboard/hr", icon: Briefcase, description: "Manage applicants and roles" },
+  { name: "Referrer", href: "/dashboard/referrer", icon: UserCheck, description: "Refer candidates and track progress" },
+  { name: "Candidate", href: "/dashboard/candidate", icon: User, description: "View your application status" },
+];
+
 export default function Home() {
-  return <></>;
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
+      <div className="flex flex-col items-center justify-center text-center">
+        <div className="p-2 bg-primary rounded-full mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--primary-foreground))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-users-round"><path d="M18 21a8 8 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><path d="M6 21a8 8 0 0 1 12 0"/></svg>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground">
+          Welcome to Refro
+        </h1>
+        <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+          Your streamlined referral system. Select a role to enter your dashboard and manage your referral activities.
+        </p>
+      </div>
+
+      <div className="mt-12 w-full max-w-4xl">
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="font-headline text-2xl">Simulate Login</CardTitle>
+            <CardDescription>Choose a role to explore the corresponding dashboard.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {roles.map((role) => (
+                <Button key={role.name} asChild variant="outline" size="lg" className="h-auto justify-start p-4 text-left">
+                  <Link href={role.href}>
+                    <role.icon className="mr-4 size-8 text-primary" />
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-base">{role.name}</span>
+                      <span className="text-sm text-muted-foreground">{role.description}</span>
+                    </div>
+                    <ArrowRight className="ml-auto size-5" />
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <footer className="mt-12 text-center text-sm text-muted-foreground">
+        <p>This is a demo application. No real data is processed or stored.</p>
+      </footer>
+    </main>
+  );
 }
