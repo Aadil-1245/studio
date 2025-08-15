@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -7,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, CheckCircle, XCircle, Video, VideoOff } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -110,14 +111,21 @@ const allQuestions = {
         options: ["A legally binding digital document", "A self-executing contract with the terms of the agreement directly written into code", "A new type of cryptocurrency", "A decentralized web browser"],
         answer: "A self-executing contract with the terms of the agreement directly written into code"
     },
-    ]
-
+    ],
+    "Figma": [{ question: "What is Figma primarily used for?", options: ["Vector graphics editing", "Video editing", "UI/UX design", "Writing code"], answer: "UI/UX design" }],
+    "Kubernetes": [{ question: "What is a 'Pod' in Kubernetes?", options: ["A storage unit", "The smallest deployable unit of computing", "A networking rule", "A type of service"], answer: "The smallest deployable unit of computing" }],
+    "Node.js": [{ question: "What is Node.js?", options: ["A frontend framework", "A JavaScript runtime environment", "A database", "A programming language"], answer: "A JavaScript runtime environment" }],
 };
 
 function TestComponent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { toast } = useToast();
+  
   const skill = searchParams.get('skill') || "Next.js";
+  const source = searchParams.get('source');
+  const jobTitle = searchParams.get('job');
+  
   const questions = allQuestions[skill as keyof typeof allQuestions] || allQuestions['Next.js'];
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -183,7 +191,28 @@ function TestComponent() {
             correctAnswers++;
         }
     });
-    setScore(Math.round((correctAnswers / questions.length) * 100));
+    const finalScore = Math.round((correctAnswers / questions.length) * 100);
+    setScore(finalScore);
+
+    if (finalScore >= 80 && source === 'job-apply' && jobTitle) {
+         toast({
+            title: "Test Passed! Application Submitted.",
+            description: `Your application for ${jobTitle} has been submitted.`
+        })
+    }
+  }
+
+  const getBackButton = () => {
+    const href = source === 'job-apply' ? '/dashboard/candidate/available-jobs' : '/dashboard/candidate/skills-assessment';
+    const text = source === 'job-apply' ? 'Back to Jobs' : 'Back to Assessments';
+    return (
+        <Button asChild variant="outline" size="sm">
+            <Link href={href}>
+                <ArrowLeft className="mr-2" />
+                {text}
+            </Link>
+        </Button>
+    )
   }
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -192,12 +221,7 @@ function TestComponent() {
   return (
     <>
       <div className="mb-4">
-        <Button asChild variant="outline" size="sm">
-            <Link href="/dashboard/candidate/skills-assessment">
-                <ArrowLeft className="mr-2" />
-                Back to Assessments
-            </Link>
-        </Button>
+        {getBackButton()}
       </div>
 
       <Card className="max-w-3xl mx-auto">
@@ -247,7 +271,9 @@ function TestComponent() {
                 <p className="text-5xl font-bold text-primary mb-6">{score}%</p>
                 <p className="text-sm text-muted-foreground">{score >= 80 ? "Great job! You've passed the assessment." : "You did not pass this time. Feel free to try again later."}</p>
                  <Button asChild className="mt-6" variant="default">
-                    <Link href="/dashboard/candidate">Return to Dashboard</Link>
+                    <Link href={source === 'job-apply' ? '/dashboard/candidate/available-jobs' : '/dashboard/candidate'}>
+                        {source === 'job-apply' ? 'Return to Jobs' : 'Return to Dashboard'}
+                    </Link>
                 </Button>
             </div>
           )}
