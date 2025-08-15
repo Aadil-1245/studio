@@ -12,10 +12,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send, Pencil } from 'lucide-react';
+import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send, Pencil, CheckCircle, Calendar, UserCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 const user = { name: 'HR Manager', role: 'HR', avatar: 'https://placehold.co/100x100', initials: 'HR' };
 
@@ -34,13 +35,13 @@ const jobSchema = z.object({
 });
 
 const initialApplicants = [
-  { name: "Liam Johnson", role: "Software Engineer", match: 92, status: "Interviewing" },
-  { name: "Emma Williams", role: "UX Designer", match: 85, status: "Pending Review" },
-  { name: "Noah Brown", role: "Product Manager", match: 78, status: "Hired" },
-  { name: "Olivia Jones", role: "Data Scientist", match: 65, status: "Rejected" },
-  { name: "Ava Garcia", role: "Marketing Lead", match: 95, status: "Offer Extended" },
-  { name: "William Miller", role: "DevOps Engineer", match: 42, status: "Pending Review" },
-  { name: "Sophia Davis", role: "Software Engineer", match: 88, status: "Interviewing" },
+  { name: "Liam Johnson", role: "Software Engineer", match: 92, status: "Interviewing", testScore: 88, meetingLink: '' },
+  { name: "Emma Williams", role: "UX Designer", match: 85, status: "Interviewing", testScore: 91, meetingLink: '' },
+  { name: "Noah Brown", role: "Product Manager", match: 78, status: "Hired", testScore: null, meetingLink: '' },
+  { name: "Olivia Jones", role: "Data Scientist", match: 65, status: "Rejected", testScore: null, meetingLink: '' },
+  { name: "Ava Garcia", role: "Marketing Lead", match: 95, status: "Offer Extended", testScore: 94, meetingLink: 'https://meet.google.com/lookup/fake-meeting-code' },
+  { name: "William Miller", role: "DevOps Engineer", match: 42, status: "Pending Review", testScore: null, meetingLink: '' },
+  { name: "Sophia Davis", role: "Software Engineer", match: 88, status: "Interviewing", testScore: 79, meetingLink: '' },
 ];
 
 export default function HrDashboard() {
@@ -78,11 +79,23 @@ export default function HrDashboard() {
     })
   }
 
+  const handleHire = (applicantName: string) => {
+    setApplicants(applicants.map(app => app.name === applicantName ? { ...app, status: 'Hired' } : app));
+    toast({ title: "Candidate Hired!", description: `${applicantName} has been marked as Hired.` });
+  }
+
+  const handleScheduleMeeting = (applicantName: string) => {
+     setApplicants(applicants.map(app => app.name === applicantName ? { ...app, meetingLink: 'https://meet.google.com/lookup/fake-meeting-code' } : app));
+    toast({ title: "Meeting Link Generated", description: `A simulated meeting link has been created for ${applicantName}.` });
+  }
+
+  const interviewingApplicants = applicants.filter(a => a.status === 'Interviewing');
+
   return (
     <>
       <DashboardHeader user={user} />
       <Tabs defaultValue="applicants" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">
             <UserCircle className="mr-2"/> Profile
           </TabsTrigger>
@@ -91,6 +104,9 @@ export default function HrDashboard() {
           </TabsTrigger>
           <TabsTrigger value="applicants">
             <FileText className="mr-2"/> Applicants
+          </TabsTrigger>
+          <TabsTrigger value="assessments">
+            <CheckCircle className="mr-2"/> Assessments
           </TabsTrigger>
         </TabsList>
         
@@ -194,6 +210,51 @@ export default function HrDashboard() {
                     ))}
                     </TableBody>
                 </Table>
+                </CardContent>
+            </Card>
+        </TabsContent>
+
+        <TabsContent value="assessments" className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Candidate Assessments</CardTitle>
+                    <CardDescription>Track candidates who have been sent the company test.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {interviewingApplicants.length > 0 ? (
+                        interviewingApplicants.map(applicant => (
+                             <Card key={applicant.name} className="p-4">
+                                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                    <div className="flex-1">
+                                        <p className="font-bold">{applicant.name}</p>
+                                        <p className="text-sm text-muted-foreground">{applicant.role}</p>
+                                        <p className="text-sm text-muted-foreground mt-1">
+                                            Test Score: <span className="font-semibold text-primary">{applicant.testScore}%</span>
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap items-start gap-2">
+                                        {applicant.meetingLink ? (
+                                             <div className="flex items-center gap-2 text-sm">
+                                                <span className="font-semibold">Meeting Link:</span>
+                                                <Link href={applicant.meetingLink} target="_blank" className="text-primary underline hover:text-primary/80">
+                                                    {applicant.meetingLink}
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            <Button size="sm" variant="outline" onClick={() => handleScheduleMeeting(applicant.name)}>
+                                                <Calendar className="mr-2" /> Schedule Meeting
+                                            </Button>
+                                        )}
+                                        <Button size="sm" onClick={() => handleHire(applicant.name)}>
+                                            <UserCheck className="mr-2" /> Hire
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="text-sm text-muted-foreground text-center py-8">No candidates are currently in the assessment stage.</p>
+                    )}
                 </CardContent>
             </Card>
         </TabsContent>
