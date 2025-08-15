@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/dashboard-header';
-import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send } from 'lucide-react';
+import { UserCircle, Briefcase, FileText, Building, Mail, Phone, BadgeCheck, Send, Pencil } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
@@ -69,6 +69,13 @@ export default function HrDashboard() {
     jobForm.reset();
     toast({ title: "Job Posted!", description: "Your job listing is now live for candidates." });
   };
+  
+  const onSendTest = (applicantName: string) => {
+    toast({
+        title: "Assessment Sent!",
+        description: `The company test has been sent to ${applicantName}.`,
+    })
+  }
 
   return (
     <>
@@ -155,7 +162,8 @@ export default function HrDashboard() {
                         <TableHead>Applicant</TableHead>
                         <TableHead>Role Applied For</TableHead>
                         <TableHead className="text-center">Match %</TableHead>
-                        <TableHead className="text-right">Status</TableHead>
+                        <TableHead className="text-center">Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -170,8 +178,16 @@ export default function HrDashboard() {
                             {applicant.match}%
                             </Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                             <Badge variant="outline">{applicant.status}</Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                            {applicant.match >= 75 ? (
+                                <Button variant="outline" size="sm" onClick={() => onSendTest(applicant.name)}>
+                                    <Pencil className="mr-2" />
+                                    Send Test
+                                </Button>
+                            ) : '-'}
                         </TableCell>
                         </TableRow>
                     ))}
