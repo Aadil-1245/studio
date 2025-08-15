@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Handshake, Search, CheckCircle, Clock, XCircle, Briefcase, Star, IndianRupee } from "lucide-react";
+import { ArrowLeft, Handshake, Search, CheckCircle, Clock, XCircle, Briefcase, Star, IndianRupee, CreditCard, Landmark, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 const referrers = [
   {
@@ -39,9 +40,18 @@ const sentRequests = [
     { name: 'Michael Chen', status: 'Pending' },
 ];
 
+const paymentMethods = [
+  { name: 'GPay', icon: Wallet },
+  { name: 'Paytm', icon: Wallet },
+  { name: 'Card', icon: CreditCard },
+  { name: 'PayPal', icon: Landmark },
+]
+
 export default function FindReferrerPage() {
     const { toast } = useToast();
     const [requests, setRequests] = useState(sentRequests);
+    const [paymentMade, setPaymentMade] = useState(false);
+    const [selectedPayment, setSelectedPayment] = useState('');
 
     const handleSendRequest = (name: string) => {
         toast({
@@ -60,6 +70,17 @@ export default function FindReferrerPage() {
         case 'Rejected': return <XCircle className="text-red-500" />;
         default: return null;
     }
+  }
+
+  const handlePayment = (method: string) => {
+    setSelectedPayment(method);
+    setTimeout(() => {
+        setPaymentMade(true);
+        toast({
+            title: "Payment Successful!",
+            description: `Payment of ₹1500 made via ${method}.`,
+        })
+    }, 1000)
   }
 
   return (
@@ -104,7 +125,7 @@ export default function FindReferrerPage() {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button disabled={!referrer.match} onClick={() => handleSendRequest(referrer.name)}>
+                                <Button disabled={!referrer.match || !!requests.find(r => r.name === referrer.name)} onClick={() => handleSendRequest(referrer.name)}>
                                     <Handshake className="mr-2" />
                                     {requests.find(r => r.name === referrer.name) ? 'Request Sent' : 'Request Referral'}
                                 </Button>
@@ -122,7 +143,7 @@ export default function FindReferrerPage() {
                     <CardDescription>Track the status of your referral requests.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {requests.map(req => (
+                    {requests.length > 0 ? requests.map(req => (
                         <div key={req.name} className="flex items-center">
                             <div className="flex-1">
                                 <p className="font-medium">{req.name}</p>
@@ -130,7 +151,7 @@ export default function FindReferrerPage() {
                             </div>
                             {getStatusIcon(req.status)}
                         </div>
-                    ))}
+                    )) : <p className="text-sm text-muted-foreground">No requests sent yet.</p>}
                 </CardContent>
             </Card>
 
@@ -143,24 +164,47 @@ export default function FindReferrerPage() {
                     {requests.filter(r => r.status === 'Accepted').length > 0 ? (
                         requests.filter(r => r.status === 'Accepted').map(req => (
                         <div key={req.name} className="space-y-4">
-                            <p className="font-semibold text-green-600">Referral by {req.name} was successful!</p>
-                            <div className="border rounded-lg p-4 space-y-3">
-                                <h4 className="font-bold text-center">Payment Breakdown</h4>
-                                <Separator />
-                                <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground">Total Referral Fee:</span>
-                                    <span className="font-bold flex items-center gap-1"><IndianRupee size={16}/> 1500.00</span>
+                           {paymentMade ? (
+                               <div className="text-center p-4 bg-green-500/10 rounded-lg">
+                                 <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
+                                 <h3 className="font-bold text-lg">Payment Complete!</h3>
+                                 <p className="text-sm text-muted-foreground">The referral fee has been processed.</p>
+                               </div>
+                           ) : (
+                            <>
+                                <p className="font-semibold text-green-600">Referral by {req.name} was successful!</p>
+                                <div className="border rounded-lg p-4 space-y-3">
+                                    <h4 className="font-bold text-center">Payment Breakdown</h4>
+                                    <Separator />
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-muted-foreground">Total Referral Fee:</span>
+                                        <span className="font-bold flex items-center gap-1"><IndianRupee size={16}/> 1500.00</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-muted-foreground">To Referrer ({req.name}):</span>
+                                        <span className="font-medium flex items-center gap-1"><IndianRupee size={14}/> 1000.00</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-muted-foreground">To Company (Refro Inc.):</span>
+                                        <span className="font-medium flex items-center gap-1"><IndianRupee size={14}/> 500.00</span>
+                                    </div>
                                 </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">To Referrer ({req.name}):</span>
-                                    <span className="font-medium flex items-center gap-1"><IndianRupee size={14}/> 1000.00</span>
+                                <div className="pt-2">
+                                     <h4 className="font-semibold text-center mb-3">Choose Payment Method</h4>
+                                     <div className="grid grid-cols-2 gap-2">
+                                        {paymentMethods.map(method => {
+                                            const Icon = method.icon;
+                                            return (
+                                                <Button key={method.name} variant="outline" onClick={() => handlePayment(method.name)} disabled={!!selectedPayment}>
+                                                    {selectedPayment === method.name ? 'Processing...' : <><Icon className="mr-2" /> {method.name}</>}
+                                                </Button>
+                                            )
+                                        })}
+                                     </div>
                                 </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">To Company (Refro Inc.):</span>
-                                    <span className="font-medium flex items-center gap-1"><IndianRupee size={14}/> 500.00</span>
-                                </div>
-                            </div>
-                             <p className="text-xs text-muted-foreground text-center pt-2">This is a simulation. No real payments are processed.</p>
+                                <p className="text-xs text-muted-foreground text-center pt-2">This is a simulation. No real payments are processed.</p>
+                            </>
+                           )}
                         </div>
                         ))
                     ) : (
