@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code, Users, Handshake } from 'lucide-react';
+import { Briefcase, Home, User, UserCheck, UserCog, UsersRound, ClipboardCheck, Award, Code, Users, Handshake, BrainCircuit } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
@@ -11,7 +11,7 @@ const allNavItems = [
   { href: '/dashboard/hr', label: 'HR', icon: Briefcase, role: 'hr' },
   { href: '/dashboard/referrer', label: 'Referrer', icon: UserCheck, role: 'referrer' },
   { href: '/dashboard/candidate', label: 'Dashboard', icon: User, role: 'candidate' },
-  { href: '/dashboard/candidate/test', label: 'Skills Test', icon: ClipboardCheck, role: 'candidate' },
+  { href: '/dashboard/candidate/skills-assessment', label: 'Skills Assessments', icon: BrainCircuit, role: 'candidate' },
   { href: '/dashboard/candidate/certifications', label: 'Certifications', icon: Award, role: 'candidate' },
   { href: '/dashboard/candidate/coding-challenge', label: 'Coding Challenge', icon: Code, role: 'candidate' },
   { href: '/dashboard/candidate/leaderboard', label: 'Leaderboard', icon: Users, role: 'candidate' },
@@ -24,6 +24,12 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
 
   const navItems = allNavItems.filter(item => {
     const itemRole = item.href.split('/')[2];
+    
+    // Hide the base test page from the nav
+    if(item.href.includes('/test')){
+        return false;
+    }
+    
     if (role === 'admin') {
       // Show all nav items for admin for simplicity.
       return true;
@@ -48,7 +54,7 @@ export function DashboardNav({ isMobile = false }: { isMobile?: boolean }) {
       <nav className="flex-1 overflow-auto py-2 px-2 lg:px-4">
         <div className="grid items-start font-medium">
           {navItems.map(({ href, label, icon: Icon }) => {
-            const isActive = pathname === href;
+            const isActive = pathname.startsWith(href);
             const linkContent = (
               <Link
                 href={href}

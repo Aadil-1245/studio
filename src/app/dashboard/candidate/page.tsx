@@ -5,11 +5,11 @@ import DashboardHeader from '@/components/dashboard-header';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Users, Handshake } from "lucide-react";
+import { Award, Lightbulb, ClipboardCheck, ArrowRight, Code, Trophy, Handshake } from "lucide-react";
 
 const user = { name: 'Jane Smith', role: 'Candidate', avatar: 'https://placehold.co/100x100', initials: 'JS' };
 
-const skills = ["React", "TypeScript", "Node.js", "Tailwind CSS", "Next.js"];
+const skills = ["React", "Java", "Python", "DSA", "HTML", "SQL", "CSS", "Next.js", "Web3"];
 
 export default function CandidateDashboard() {
   return (
@@ -33,14 +33,14 @@ export default function CandidateDashboard() {
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
                 <ClipboardCheck className="text-accent" />
-                Skills Assessment
+                Skills Assessments
             </CardTitle>
             <CardDescription>A multiple-choice quiz to test your foundational knowledge.</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">Test your knowledge with our quick quiz.</p>
+            <p className="text-sm text-muted-foreground mb-4">Test your knowledge with our quick quizzes.</p>
              <Button asChild>
-                <Link href="/dashboard/candidate/test">
+                <Link href="/dashboard/candidate/skills-assessment">
                     Take Skills Assessment <ArrowRight className="ml-2" />
                 </Link>
             </Button>
@@ -104,7 +104,7 @@ export default function CandidateDashboard() {
          <Card>
             <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2">
-                    <Users className="text-primary" />
+                    <Trophy className="text-primary" />
                     Leaderboard
                 </CardTitle>
                 <CardDescription>See how you rank against other candidates.</CardDescription>
