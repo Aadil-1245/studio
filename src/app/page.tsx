@@ -4,10 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowRight, Briefcase, User, UserCheck, UserCog } from "lucide-react";
 
 const roles = [
-  { name: "Admin", href: "/dashboard/admin", icon: UserCog, description: "Oversee the entire platform" },
-  { name: "HR", href: "/dashboard/hr", icon: Briefcase, description: "Manage applicants and roles" },
-  { name: "Referrer", href: "/dashboard/referrer", icon: UserCheck, description: "Refer candidates and track progress" },
-  { name: "Candidate", href: "/dashboard/candidate", icon: User, description: "View your application status" },
+  { name: "Admin", href: "/login?role=admin", icon: UserCog, description: "Oversee the entire platform" },
+  { name: "HR", href: "/login?role=hr", icon: Briefcase, description: "Manage applicants and roles" },
+  { name: "Referrer", href: "/login?role=referrer", icon: UserCheck, description: "Refer candidates and track progress" },
+  { name: "Candidate", href: "/login?role=candidate", icon: User, description: "View your application status" },
 ];
 
 export default function Home() {
