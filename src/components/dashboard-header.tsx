@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu, LogOut } from 'lucide-react';
 import { DashboardNav } from './dashboard-nav';
 import { ThemeSwitcher } from './theme-switcher';
+import Link from 'next/link';
 
 interface DashboardHeaderProps {
   user: {
@@ -51,9 +52,11 @@ const DashboardHeader: FC<DashboardHeaderProps> = ({ user }) => {
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
+            <DropdownMenuItem asChild>
+              <Link href="/">
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
