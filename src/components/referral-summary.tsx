@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { summarizeReferralRequest, SummarizeReferralRequestOutput } from '@/ai/flows/summarize-referral-request';
+import { SummarizeReferralRequestOutput } from '@/ai/flows/summarize-referral-request';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
@@ -36,7 +36,17 @@ export default function ReferralSummary() {
     setIsLoading(true);
     setSummary(null);
     try {
-      const result = await summarizeReferralRequest(data);
+      const response = await fetch('/api/genkit/summarize-referral-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestMessage: data.requestMessage }),
+      });
+       if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
       setSummary(result);
     } catch (error) {
       console.error('Error summarizing referral request:', error);

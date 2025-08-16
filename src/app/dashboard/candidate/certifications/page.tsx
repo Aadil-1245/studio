@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { verifyCertification } from '@/ai/flows/verify-certification';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader2, Sparkles, ArrowLeft, CheckCircle, Upload, Clock, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
+import { VerifyCertificationOutput } from '@/ai/flows/verify-certification';
 
 const FormSchema = z.object({
   certificationName: z.string().min(5, {
@@ -45,7 +45,15 @@ export default function CertificationsPage() {
     setQuestions([]);
     setCurrentCertName(data.certificationName);
     try {
-      const result = await verifyCertification({ certificationName: data.certificationName });
+      const response = await fetch('/api/genkit/verify-certification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ certificationName: data.certificationName }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result: VerifyCertificationOutput = await response.json();
       setQuestions(result.questions);
       setIsAnswering(true);
     } catch (error) {
