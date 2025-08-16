@@ -1,9 +1,19 @@
+
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, TrendingUp, Download, FolderGit2 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from "@/components/ui/chart";
+import dynamic from 'next/dynamic';
+
+const DynamicRadarChart = dynamic(() => import('recharts').then(mod => mod.RadarChart), {
+  ssr: false,
+  loading: () => <div className="w-full h-80 flex items-center justify-center"><p>Loading chart...</p></div>
+});
+
 
 const performanceData = [
   { subject: 'React', score: 80, fullMark: 100 },
@@ -63,12 +73,12 @@ export default function CandidateAnalyticsPage() {
           <CardContent className="grid place-items-center">
             <ChartContainer config={chartConfig} className="w-full max-w-lg aspect-square h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={performanceData}>
+                <DynamicRadarChart data={performanceData}>
                   <PolarGrid />
                   <PolarAngleAxis dataKey="subject" />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} />
                   <Radar name="Jane Smith" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
-                </RadarChart>
+                </DynamicRadarChart>
               </ResponsiveContainer>
             </ChartContainer>
           </CardContent>
