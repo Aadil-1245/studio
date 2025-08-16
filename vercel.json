@@ -1,0 +1,14 @@
+
+{
+  "functions": {
+    "src/ai/flows/**/*.ts": {
+      "maxDuration": 120
+    }
+  },
+  "experimental": {
+    "serverActions": {
+      "bodySizeLimit": "25mb",
+      "expiration": 120
+    }
+  }
+}
