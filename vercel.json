@@ -1,7 +1,7 @@
 
 {
   "functions": {
-    "src/ai/flows/**/*.ts": {
+    "app/dashboard/**/page.js": {
       "maxDuration": 120
     }
   }
