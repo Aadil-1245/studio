@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader2, Sparkles, ArrowLeft, CheckCircle, Upload, Clock, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
-import { VerifyCertificationOutput } from '@/ai/flows/verify-certification';
+import type { VerifyCertificationOutput } from '@/app/api/genkit/verify-certification/route';
 
 const FormSchema = z.object({
   certificationName: z.string().min(5, {
